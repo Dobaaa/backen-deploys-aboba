@@ -18,8 +18,8 @@ const resgisterUser = async (req, res) => {
       return res.json({ success: false, message: "enter a strong password  " });
     }
 
-    const salt = await bycrypt.genSalt(10);
-    const hashedPassword = await bycrypt.hash(password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const UserData = {
       name,
@@ -47,7 +47,7 @@ const LoginUser = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "user does not exist" });
     }
-    const isMatch = await bycrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       res.json({ success: true, token });
